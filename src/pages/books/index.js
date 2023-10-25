@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import Header from '../../components/header'
 import BookCard from '@/components/bookCard'
@@ -10,11 +12,18 @@ import HTTP from '../../utils/HTTP'
 
 import styles from './bookPage.module.css'
 
+//Next js
+import { useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
+
 
 export default function Books() {
   const [auth, setAuth] = useState(true)
   const [books, setBooks] = useState([])
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter()
+  const params = useParams()
 
   useEffect(() => {
     const request = new HTTP()
@@ -22,21 +31,24 @@ export default function Books() {
       const data = makeListOfBooks(response)
       setBooks(data)
       setLoading(false)
-
+      isAuth()
     })
     return () => {
       console.log("Component Out!")
     }
   }, [])
 
-  // const isAuth = () => {
-  //   token = localStorage.getItem("redconnect")
-  //   if (!token) {
-  //     setAuth(false) 
-  //   } else {
-  //     setAuth(true)
-  //   }
-  // }
+  const isAuth = () => {
+    const token = localStorage.getItem("redconnect")
+    if (!token) {
+      setAuth(false) 
+      router.push("/")
+    } else {
+      // Compare token at the response with token at localstorage
+      setAuth(true)
+    }
+
+  }
  
   const makeListOfBooks = (list) => {
     if(list) {

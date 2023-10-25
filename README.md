@@ -5,14 +5,13 @@ Hola! 😀
 Me presento, mi nombre es Santiago Ramírez y si estas leyendo esto es porque estás por evaluar mi prueba técnica para  el cargo de Desarrollador Fullstack Semi Senior.
 
 Este repositorio contiene el **frontend** de la aplicación de libros Readconnect.
-Recibí un dataset *no sql - o una colección de libros para ser más preciso* y me tocó hacer un poco de ETL para llenar la base de datos relacional con los libros.
-
+Esta parte la dejé para el final, me faltó un poco de tiempo para entregar algo mejor.
 
 
 
 ## Tech Stack
 
-**Lenguaje:** JavaScript || ECMAScript X
+**Lenguaje:** Node.js 18 || JavaScript || ECMAScript X
 
 **Framework:** React.js - Next.js
 

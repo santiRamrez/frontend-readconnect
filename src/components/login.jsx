@@ -9,12 +9,38 @@ import Typography from '@mui/material/Typography';
 // My Components
 import Input from './Input'
 
+import HTTP from '../utils/HTTP'
+
 //Next js
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 
 const LoginComponent = () => {
+    const [data, setData] = useState({})
+    const router = useRouter()
 
+    const handleChange = (obj) => {
+        setData((prev) => {
+          const output = {
+            ...prev,
+            [obj.name]: obj.value,
+          };
+          return output;
+        });
+    };
 
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      const json = JSON.stringify(data)
+      const request = new HTTP()
+      request.postRecord(json, "login/")
+        .then((resp) => {
+          // Compare token at the response with token at localstorage
+          localStorage.setItem("redconnect", resp.token)
+          router.push('/books')
+        })
+    
+    }
 
 
   return (
@@ -35,9 +61,9 @@ const LoginComponent = () => {
                         Did you not have an account?, <Link href="/register">Sign up here!</Link>
                     </Typography>
                     <br></br>
-                    <Input size="small" name="username" label="Correo Electrónico" helpText="Ej: tucorreo@gmail.com" />
-                    <Input size="small" name="password" label="Contraseña" helpText="Ej: clave (mínimo 5 caracteres)" />
-                    <Button variant="contained" color="success">Send</Button>
+                    <Input size="small" name="username" label="Correo Electrónico" helpText="Ej: tucorreo@gmail.com" value={(val) => handleChange(val)}/>
+                    <Input size="small" name="password" label="Contraseña" helpText="Ej: clave (mínimo 5 caracteres)" value={(val) => handleChange(val)}/>
+                    <Button onClick={handleSubmit} variant="contained" color="success">Send</Button>
                 </Stack>
             </Card>
         </Stack>

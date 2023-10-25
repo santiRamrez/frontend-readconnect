@@ -1,4 +1,6 @@
-import { useState } from 'react';
+'use client'
+
+import { useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -9,10 +11,38 @@ import Typography from '@mui/material/Typography';
 // My Components
 import Input from './Input'
 
+import HTTP from '../utils/HTTP'
+
 //Next js
-import Link from 'next/link';
+import { useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 
 const RegisterComponent = () => {
+    const [data, setData] = useState({})
+    const router = useRouter()
+    
+    const handleChange = (obj) => {
+        setData((prev) => {
+          const output = {
+            ...prev,
+            [obj.name]: obj.value,
+          };
+          return output;
+        });
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault()
+      const json = JSON.stringify(data)
+      const request = new HTTP()
+      request.postRecord(json, "signup/")
+        .then((resp) => {
+          localStorage.setItem("redconnect", resp.token)
+          router.push('/books')
+        })
+    
+    }
+
   return (
     <Box>
         <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
@@ -29,10 +59,10 @@ const RegisterComponent = () => {
                     <Typography variant="h4">Create an account</Typography>
                     <br></br>
 
-                    <Input size="small" name="name" label="Name and Lastname" helpText="Ig: John Mayer" />
-                    <Input size="small" name="username" label="Email" helpText="Ig: youraccount@gmail.com" />
-                    <Input size="small" name="password" label="Password" helpText="Ig: qwerty (at least 5 characters)" />
-                    <Button variant="contained" color="success">Send</Button>
+                    <Input size="small" name="username" label="Username" helpText="Ig: JohnMayer" value={(val) => handleChange(val) }/>
+                    <Input size="small" name="email" label="Email" helpText="Ig: johnmayer@gmail.com" value={(val) => handleChange(val) }/>
+                    <Input size="small" name="password" label="Password" helpText="Ig: qwerty (at least 5 characters)" value={(val) => handleChange(val) }/>
+                    <Button type="submit" onClick={handleSubmit} variant="contained" color="success">Send</Button>
                 </Stack>
             </Card>
         </Stack>

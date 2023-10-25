@@ -26,11 +26,11 @@ import TextField from '@mui/material/TextField';
     });
 
     checkError(e.target.value);
-    value({ name, value: e.target.value });
+    value({ name, "value": e.target.value });
   };
 
   const checkError = (val) => {
-    const regex = /^\w{5,}/
+    const regex = /^\w{3,}/
     try {
         if (regex.test(val) === false) {
             setData((prev) => {
